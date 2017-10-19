@@ -71,7 +71,9 @@ void setup() {
 }
 
 void loop() {
+	int ai = mrb_gc_arena_save(mrb);
 	mrb_load_irep(mrb, bytecode);
+	mrb_gc_arena_restore(mrb, ai);
 
 	/* If there was an error executing mruby, print it out.
 	   Source: https://tyfkda.github.io/blog/2013/09/21/mruby-backtrace.html */
