@@ -7,6 +7,20 @@ Based on https://github.com/kyab/mruby-arduino, turned in to Arduino library and
 updated to get around memory limitations with mruby 1.3.0.
 Working with Arduino IDE v1.8.3.
 
+For a complete example of how to use this library with Arduino IDE 1.8.x, mruby 1.3.0
+and an actual Arduino Due, please check out [the example sketch](https://github.com/xunker/mruby_arduino_due_example).
+
+---
+
+Important note:
+
+By default, none of the Arduino.* or Serial.* functions will be available to mruby.
+Each function (e.g. digitalRead, analogWrite, pinMode) must be explicitly enabled
+by editing `config.f` and enabling uncommenting the appropriate line.
+
+This is done to save memory within the mruby VM because a few kilobytes can make a
+lot of difference on a small system like the Arduino Due.
+
 ---
 
 Use in sketch:
