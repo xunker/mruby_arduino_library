@@ -13,7 +13,6 @@
 #include "mruby/irep.h"
 
 mrb_state *mrb;
-int ai;
 size_t total_allocated;
 
 #include "skeleton.h"
@@ -69,13 +68,17 @@ void setup() {
 	/* This adds the Arduino.* and Serial.* methods to mruby, but ONLY THOSE that
 	   have been enabled in config.h. */
   add_arduino_to_mruby(mrb);
-
-	ai = mrb_gc_arena_save(mrb); // see https://github.com/mruby/mruby/blob/master/doc/guides/gc-arena-howto.md
 }
 
 void loop() {
 	mrb_load_irep(mrb, bytecode);
-	mrb_close(mrb);
-	mrb_gc_arena_restore(mrb,ai); // see https://github.com/mruby/mruby/blob/master/doc/guides/gc-arena-howto.md
+
+	/* If there was an error executing mruby, print it out.
+	   Source: https://tyfkda.github.io/blog/2013/09/21/mruby-backtrace.html */
+	if (mrb->exc) {
+		mrb_print_error(mrb);
+ 		mrb->exc = 0;
+	}
+
   delay(1000);
 }
